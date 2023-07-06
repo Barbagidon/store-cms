@@ -14,7 +14,10 @@ import { Input } from "./ui/input";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import AlertModal from "./ui/modals/alert-modal";
+import AlertModal from "./modals/alert-modal";
+import ApiAlert from "./ui/api-alert";
+import useOrigin from "@/hooks/use-origin";
+
 
 interface SettingsFormProps {
   initialData: Store;
@@ -36,6 +39,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const origin = useOrigin()
 
 
   const form = useForm<SettingsFormValues>({
@@ -81,7 +85,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     <>
       <div className="flex items-center justify-between">
         {open && <AlertModal loading={loading} onConfirm={onDelete} isOpen={open} onClose={() => setOpen(false)} />}
-        <Heading description="Manage store preferences" title="description" />
+        <Heading description="Manage store preferences" title="Settings" />
         <Button disabled={loading} onClick={() => { setOpen(true) }} size="sm" variant={"destructive"}>
           <Trash className="h-4 w-4" />
         </Button>
@@ -108,6 +112,8 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
         </form>
 
       </Form>
+      <Separator />
+      <ApiAlert title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${params.storeId}`} variant="public" />
     </>
   );
 };

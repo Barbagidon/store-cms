@@ -10,6 +10,7 @@ type Props = {
 const SetupLayout = async ({ children }: Props) => {
   const { userId } = auth();
 
+
   if (!userId) {
     redirect("/sign-up");
   }
@@ -21,6 +22,7 @@ const SetupLayout = async ({ children }: Props) => {
   if (store) {
     redirect(`/${store.id}`);
   }
+
 
   return <>{children}</>;
 };

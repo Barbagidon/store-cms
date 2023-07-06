@@ -1,7 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import Modal from '../modal'
-import { Button } from '../button'
+import Modal from '../ui/modal'
+import { Button } from '../ui/button'
+
 
 
 interface AlertModalProps {
