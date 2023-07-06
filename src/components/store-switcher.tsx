@@ -72,7 +72,7 @@ const StoreSwitcher = ({ className, items = [] }: StoreSwitcherProps) => {
         <Command>
           <CommandList>
             <CommandInput placeholder="Search store..." />
-            <CommandEmpty>Mo store found</CommandEmpty>
+            <CommandEmpty>No store found</CommandEmpty>
             <CommandGroup heading="Stores">
               {formattedItems.map((store) => (
                 <CommandItem
@@ -84,12 +84,10 @@ const StoreSwitcher = ({ className, items = [] }: StoreSwitcherProps) => {
                   <StoreIcon className="mr-2 h-4 w-4" />
                   {store.label}
                   <Check
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      curStore?.value === params.storeId
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
+                    style={{
+                      opacity: curStore?.value === store.value ? 1 : 0,
+                    }}
+                    className={"ml-auto h-4 w-4"}
                   />
                 </CommandItem>
               ))}
