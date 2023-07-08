@@ -54,6 +54,9 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     defaultValues: initialData
   })
 
+  const title = 'Settings'
+  const descr = "Manage store preferences"
+
 
   const onSubmit = async (data: SettingsFormValues) => {
     try {
@@ -92,7 +95,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     <>
       <div className="flex items-center justify-between">
         {open && <AlertModal loading={loading} onConfirm={onDelete} isOpen={open} onClose={() => setOpen(false)} />}
-        <Heading description="Manage store preferences" title="Settings" />
+        <Heading description={descr} title={title} />
         <Button disabled={loading} onClick={() => { setOpen(true) }} size="sm" variant={"destructive"}>
           <Trash className="h-4 w-4" />
         </Button>

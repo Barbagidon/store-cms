@@ -32,7 +32,8 @@ interface BillboardFormProps {
 
 
 const formSchema = z.object({
-  name: z.string().min(1)
+  label: z.string().min(1),
+  imageUrl: z.string().min(1)
 })
 
 type BillboardFormValues = z.infer<typeof formSchema>
@@ -49,9 +50,19 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const origin = useOrigin()
 
 
+  const title = initialData ? 'Edit a billboard' : 'Create a new billboard'
+  const description = initialData ? 'Edit billboard' : 'Add a new billboard'
+  const toastMessage = initialData ? 'Billboard updated' : 'Billboard created'
+  const action = initialData ? 'Save changes' : 'Create'
+
+
+
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData
+    defaultValues: initialData || {
+      label: '',
+      imageUrl: ''
+    }
   })
 
 
@@ -92,7 +103,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     <>
       <div className="flex items-center justify-between">
         {open && <AlertModal loading={loading} onConfirm={onDelete} isOpen={open} onClose={() => setOpen(false)} />}
-        <Heading description="Manage store preferences" title="Settings" />
+        <Heading description={description} title={title} />
         <Button disabled={loading} onClick={() => { setOpen(true) }} size="sm" variant={"destructive"}>
           <Trash className="h-4 w-4" />
         </Button>
@@ -101,11 +112,11 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
           <div className="grid grid-cols-3 gap-8">
-            <FormField name="name" control={form.control} render={({ field }) => (
+            <FormField name="label" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Label</FormLabel>
                 <FormControl>
-                  <Input placeholder="Store name" disabled={loading} {...field} />
+                  <Input placeholder="Billboard name" disabled={loading} {...field} />
 
                 </FormControl>
                 <FormMessage />
@@ -114,7 +125,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
           </div>
 
           <Button type="submit" className="ml-auto" disabled={loading}>
-            Save changes
+            {action}
           </Button>
         </form>
 
