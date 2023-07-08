@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import ApiAlert from "@/components/ui/api-alert";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import ImageUpload from "@/components/ui/Image-upload";
 
 
 interface BillboardFormProps {
@@ -112,6 +113,15 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <FormField name="imageUrl" control={form.control} render={({ field }) => (
+            <FormItem>
+              <FormLabel>Background image</FormLabel>
+              <FormControl>
+                <ImageUpload onRemove={() => field.onChange("")} onChange={(url) => field.onChange(url)} disabled={loading} value={field.value ? [field.value] : []} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
           <div className="grid grid-cols-3 gap-8">
             <FormField name="label" control={form.control} render={({ field }) => (
               <FormItem>
