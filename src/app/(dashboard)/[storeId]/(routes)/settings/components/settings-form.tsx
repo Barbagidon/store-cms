@@ -3,20 +3,27 @@
 import { Store } from "@prisma/client";
 import * as z from 'zod'
 import React, { useState } from "react";
-import Heading from "./ui/heading";
-import { Button } from "./ui/button";
+
+
 import { Trash } from "lucide-react";
-import { Separator } from "./ui/separator";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Input } from "./ui/input";
+
+
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import AlertModal from "./modals/alert-modal";
-import ApiAlert from "./ui/api-alert";
+
+
 import useOrigin from "@/hooks/use-origin";
+import AlertModal from "@/components/modals/alert-modal";
+import Heading from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import ApiAlert from "@/components/ui/api-alert";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 
 interface SettingsFormProps {
