@@ -20,6 +20,7 @@ model Store {
 model Billboard {
   id        String   @id @default(uuid())
   storeId   String
+  label     String
   store     Store    @relation("StoreTobillboard", fields: [storeId], references: [id])
   imageUrl  String
   createdAt DateTime @default(now())
