@@ -104,9 +104,10 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
       <div className="flex items-center justify-between">
         {open && <AlertModal loading={loading} onConfirm={onDelete} isOpen={open} onClose={() => setOpen(false)} />}
         <Heading description={description} title={title} />
-        <Button disabled={loading} onClick={() => { setOpen(true) }} size="sm" variant={"destructive"}>
+        {initialData && <Button disabled={loading} onClick={() => { setOpen(true) }} size="sm" variant={"destructive"}>
           <Trash className="h-4 w-4" />
-        </Button>
+        </Button>}
+
       </div>
       <Separator />
       <Form {...form}>
