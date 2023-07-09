@@ -6,6 +6,7 @@ export const POST = async (
   req: Request,
   { params }: { params: { storeId: string } }
 ) => {
+  console.log(params);
   try {
     const { userId } = auth();
 
@@ -13,20 +14,19 @@ export const POST = async (
 
     const { label, imageUrl } = body;
 
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+    if (!params.storeId) {
+      return new NextResponse("StoreId is required", { status: 401 });
+    }
+
     if (!label) {
       return new NextResponse("Label is required", { status: 400 });
     }
 
     if (!imageUrl) {
       return new NextResponse("Image url is required", { status: 400 });
-    }
-
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
-    if (!params.storeId) {
-      return new NextResponse("StoreId is required", { status: 401 });
     }
 
     const storeByUserId = await prismadb.store.findFirst({

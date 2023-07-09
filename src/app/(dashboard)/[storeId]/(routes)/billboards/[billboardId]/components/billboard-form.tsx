@@ -43,6 +43,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
 
   const params = useParams()
+  console.log(params)
   const router = useRouter()
 
   const [open, setOpen] = useState(false)
