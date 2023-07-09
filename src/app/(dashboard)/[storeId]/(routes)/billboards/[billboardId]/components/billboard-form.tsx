@@ -16,13 +16,13 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 
-import useOrigin from "@/hooks/use-origin";
+
 import AlertModal from "@/components/modals/alert-modal";
 import Heading from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import ApiAlert from "@/components/ui/api-alert";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import ImageUpload from "@/components/ui/Image-upload";
 
@@ -49,7 +49,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const origin = useOrigin()
+
 
 
   const title = initialData ? 'Edit a billboard' : 'Create a new billboard'
@@ -150,7 +150,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
       </Form>
       <Separator />
-      <ApiAlert title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${params.storeId}`} variant="public" />
+
     </>
   );
 };
