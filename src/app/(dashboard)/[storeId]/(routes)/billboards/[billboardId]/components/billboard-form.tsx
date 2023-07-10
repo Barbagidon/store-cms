@@ -43,7 +43,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
 
   const params = useParams()
-  console.log(initialData)
+
   const router = useRouter()
 
   const [open, setOpen] = useState(false)
@@ -96,7 +96,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
       setLoading(true)
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`)
       router.refresh()
-      router.push('/')
+      router.push(`/${params.storeId}/billboards`)
       toast.success('Billboard deleted')
 
 
