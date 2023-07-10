@@ -8,7 +8,8 @@ import { Billboard } from '@prisma/client'
 import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
-import { BillboardColumn } from './columns'
+import { BillboardColumn, columns } from './columns'
+import { DataTable } from '@/components/ui/data-table'
 
 
 interface BillboardClientProps {
@@ -30,6 +31,7 @@ const BillboardClient = ({ data }: BillboardClientProps) => {
                 </Button>
             </div>
             <Separator />
+            <DataTable searchKey='label' data={data} columns={columns} />
 
         </>
 
