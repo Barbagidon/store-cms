@@ -15,16 +15,32 @@ model Store {
   billboards Billboard[] @relation("StoreTobillboard")
   createdAt  DateTime    @default(now())
   updatedAT  DateTime    @updatedAt
+  categories Category[]  @relation("StoreToCategory")
 }
 
 model Billboard {
-  id        String   @id @default(uuid())
-  storeId   String
-  label     String
-  store     Store    @relation("StoreTobillboard", fields: [storeId], references: [id])
-  imageUrl  String
-  createdAt DateTime @default(now())
-  updatedAT DateTime @updatedAt
+  id         String     @id @default(uuid())
+  storeId    String
+  label      String
+  store      Store      @relation("StoreTobillboard", fields: [storeId], references: [id])
+  imageUrl   String
+  createdAt  DateTime   @default(now())
+  updatedAT  DateTime   @updatedAt
+  categories Category[]
 
   @@index([storeId])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  storeId     String
+  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboardId String
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAT   DateTime  @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
 }
