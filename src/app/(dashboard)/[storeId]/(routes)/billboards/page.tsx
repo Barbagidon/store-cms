@@ -11,10 +11,16 @@ const BillboardsPage = async ({ params }: { params: { storeId: string } }) => {
         where: {
             storeId: params.storeId
         },
+        include: {
+            categories: true
+        },
         orderBy: {
             createdAt: 'desc'
         }
     })
+
+
+
 
 
 
