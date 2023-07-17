@@ -47,6 +47,8 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
 
 
 
+
+
   const params = useParams()
 
   const router = useRouter()
@@ -74,6 +76,7 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
 
 
   const onSubmit = async (data: CategoryFormValues) => {
+
     try {
       setLoading(true)
       if (initialData) {
@@ -113,6 +116,9 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
     }
   }
 
+
+
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -128,8 +134,9 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
 
           <div className="grid grid-cols-3 gap-8">
-            <FormField name="name" control={form.control} render={({ field }) => (
-              <FormItem>
+            <FormField name="name" control={form.control} render={({ field }) => {
+              console.log(field)
+              return <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Category name" disabled={loading} {...field} />
@@ -137,31 +144,31 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )} />
+            }} />
 
-            <FormField name="billboardId" control={form.control} render={({ field }) => (
-              <FormItem>
-                <FormLabel>Billboard</FormLabel>
-                <Select defaultValue={field.value} value={field.value} onValueChange={field.onChange} disabled={loading}>
-
-                  <FormControl>
-                    <SelectTrigger >
-                      <SelectValue placeholder="Select a billboard" defaultValue={field.value} />
-
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {billboards.map(board =>
-                      <SelectItem value={board.label} key={board.id}>
-                        {board.label}
-                      </SelectItem>
-
-                    )}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )} />
+            <FormField
+              control={form.control}
+              name="billboardId"
+              render={({ field }) => {
+                console.log(field)
+                return <FormItem>
+                  <FormLabel>Billboard</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a billboard" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {billboards.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>{billboard.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              }}
+            />
           </div>
 
           <Button type="submit" className="ml-auto" disabled={loading}>
