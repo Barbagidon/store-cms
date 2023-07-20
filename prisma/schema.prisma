@@ -16,6 +16,7 @@ model Store {
   categories Category[]  @relation("StoreToCategory")
   sizes      Size[]      @relation("StoreToSize")
   colors     Color[]     @relation("StoreToColor")
+  products   Product[]   @relation("StoreToProduct")
   createdAt  DateTime    @default(now())
   updatedAT  DateTime    @updatedAt
 }
@@ -39,6 +40,7 @@ model Category {
   store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
   billboardId String
   billboard   Billboard @relation(fields: [billboardId], references: [id])
+  products    Product[] @relation("CategoryToProduct")
   name        String
   createdAt   DateTime  @default(now())
   updatedAT   DateTime  @updatedAt
@@ -48,25 +50,48 @@ model Category {
 }
 
 model Size {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   storeId   String
-  store     Store    @relation("StoreToSize", fields: [storeId], references: [id])
+  store     Store     @relation("StoreToSize", fields: [storeId], references: [id])
   name      String
   value     String
-  createdAt DateTime @default(now())
-  updatedAT DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAT DateTime  @updatedAt
+  products  Product[] @relation("SizeToProduct")
 
   @@index([storeId])
 }
 
 model Color {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   storeId   String
-  store     Store    @relation("StoreToColor", fields: [storeId], references: [id])
+  store     Store     @relation("StoreToColor", fields: [storeId], references: [id])
   name      String
   value     String
-  createdAt DateTime @default(now())
-  updatedAT DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAT DateTime  @updatedAt
+  products  Product[] @relation("ColorToProduct")
 
   @@index([storeId])
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  storeId    String
+  store      Store    @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId String
+  category   Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name       String
+  price      Decimal
+  isFeatured Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  sizeId     String
+  size       Size     @relation("SizeToProduct", fields: [sizeId], references: [id])
+  colorId    String
+  color      Color    @relation("ColorToProduct", fields: [colorId], references: [id])
+
+  @@index([sizeId])
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([colorId])
 }
