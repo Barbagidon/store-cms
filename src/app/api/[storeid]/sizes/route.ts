@@ -6,7 +6,6 @@ export const POST = async (
   req: Request,
   { params }: { params: { storeId: string } }
 ) => {
-  console.log(params);
   try {
     const { userId } = auth();
 
@@ -26,7 +25,7 @@ export const POST = async (
     }
 
     if (!value) {
-      return new NextResponse("Value url is required", { status: 400 });
+      return new NextResponse("Value  is required", { status: 400 });
     }
 
     const storeByUserId = await prismadb.store.findFirst({
