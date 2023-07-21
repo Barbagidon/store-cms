@@ -68,9 +68,9 @@ model Color {
   store     Store     @relation("StoreToColor", fields: [storeId], references: [id])
   name      String
   value     String
+  products  Product[] @relation("ColorToProduct")
   createdAt DateTime  @default(now())
   updatedAT DateTime  @updatedAt
-  products  Product[] @relation("ColorToProduct")
 
   @@index([storeId])
 }
@@ -89,9 +89,23 @@ model Product {
   size       Size     @relation("SizeToProduct", fields: [sizeId], references: [id])
   colorId    String
   color      Color    @relation("ColorToProduct", fields: [colorId], references: [id])
+  images     Image[]
+  createdAt  DateTime @default(now())
+  updatedAT  DateTime @updatedAt
 
   @@index([sizeId])
   @@index([storeId])
   @@index([categoryId])
   @@index([colorId])
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  createdAt DateTime @default(now())
+  updatedAT DateTime @updatedAt
+
+  @@index([productId])
 }
