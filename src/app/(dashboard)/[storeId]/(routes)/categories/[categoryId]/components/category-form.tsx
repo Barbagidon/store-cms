@@ -135,7 +135,6 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
 
           <div className="grid grid-cols-3 gap-8">
             <FormField name="name" control={form.control} render={({ field }) => {
-              console.log(field)
               return <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
@@ -150,7 +149,6 @@ const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
               control={form.control}
               name="billboardId"
               render={({ field }) => {
-                console.log(field)
                 return <FormItem>
                   <FormLabel>Billboard</FormLabel>
                   <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>

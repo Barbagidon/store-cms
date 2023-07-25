@@ -1,6 +1,6 @@
 "use client";
 
-import { Product, Image } from "@prisma/client";
+import { Product, Image, Color, Category, Size } from "@prisma/client";
 import * as z from 'zod'
 import React, { useState } from "react";
 
@@ -23,14 +23,19 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import ImageUpload from "@/components/ui/Image-upload";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
 interface ProductFormProps {
   initialData: Product & {
     images: Image[]
   } | null;
+  colors: Color[],
+  categories: Category[],
+  sizes: Size[]
 }
 
 
@@ -50,7 +55,7 @@ const formSchema = z.object({
 
 type ProductFormValues = z.infer<typeof formSchema>
 
-const ProductForm = ({ initialData }: ProductFormProps) => {
+const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProps) => {
 
 
   const params = useParams()
@@ -142,25 +147,139 @@ const ProductForm = ({ initialData }: ProductFormProps) => {
             <FormItem>
               <FormLabel>Images</FormLabel>
               <FormControl>
-                <ImageUpload onRemove={(url) => field.onChange([...field.value.filter(cur => cur.url !== url)])} onChange={(url) => {
-
-                  console.log(field.value)
-
-                  return field.onChange([...field.value, { url }])
-                }} disabled={loading} value={field.value.map(image => image.url)} />
+                <ImageUpload onRemove={(url) => field.onChange([...field.value.filter(cur => cur.url !== url)])} onChange={(url) => field.onChange([...field.value, { url }])} disabled={loading} value={field.value.map(image => image.url)} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )} />
           <div className="grid grid-cols-3 gap-8">
-            <FormField name="label" control={form.control} render={({ field }) => (
+            <FormField name="name" control={form.control} render={({ field }) => (
               <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Billboard name" disabled={loading} {...field} />
+                  <Input placeholder="Product name" disabled={loading} {...field} />
 
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )} />
+            <FormField name="price" control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="9.99" disabled={loading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => {
+
+                return <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="sizeId"
+              render={({ field }) => {
+
+                return <FormItem>
+                  <FormLabel>Size</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a size" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {sizes.map((size) => (
+                        <SelectItem key={size.id} value={size.id}>{size.value}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="colorId"
+              render={({ field }) => {
+
+                return <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a color" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {colors.map((color) => (
+                        <SelectItem key={color.id} value={color.id}>{color.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              }}
+            />
+            <FormField name="isFeatured" control={form.control} render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    //@ts-ignore
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+
+                  <FormLabel>
+                    Featured
+                  </FormLabel>
+                  <FormDescription>
+                    This product will appear on the home page
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )} />
+            <FormField name="isArchived" control={form.control} render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    //@ts-ignore
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+
+                  <FormLabel>
+                    Archived
+                  </FormLabel>
+                  <FormDescription>
+                    This product will not appear anywhere in this store
+                  </FormDescription>
+                </div>
               </FormItem>
             )} />
           </div>
