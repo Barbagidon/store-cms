@@ -1,6 +1,6 @@
 "use client";
 
-import { Billboard, Store } from "@prisma/client";
+import { Product, Image } from "@prisma/client";
 import * as z from 'zod'
 import React, { useState } from "react";
 
@@ -27,19 +27,30 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import ImageUpload from "@/components/ui/Image-upload";
 
 
-interface BillboardFormProps {
-  initialData: Billboard | null;
+interface ProductFormProps {
+  initialData: Product & {
+    images: Image[]
+  } | null;
 }
 
 
 const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1)
+  name: z.string().min(1),
+  images: z.object({ url: z.string() }).array(),
+  price: z.coerce.number().min(1),
+  categoryId: z.string().min(1),
+  colorId: z.string().min(1),
+  sizeId: z.string().min(1),
+  isFeatured: z.boolean().default(false).optional(),
+  isArchived: z.boolean().default(false).optional(),
+
+
+
 })
 
-type BillboardFormValues = z.infer<typeof formSchema>
+type ProductFormValues = z.infer<typeof formSchema>
 
-const BillboardForm = ({ initialData }: BillboardFormProps) => {
+const ProductForm = ({ initialData }: ProductFormProps) => {
 
 
   const params = useParams()
@@ -52,23 +63,29 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
 
 
-  const title = initialData ? 'Edit a billboard' : 'Create a new billboard'
-  const description = initialData ? 'Edit billboard' : 'Add a new billboard'
-  const toastMessage = initialData ? 'Billboard updated' : 'Billboard created'
+  const title = initialData ? 'Edit a product' : 'Create a new product'
+  const description = initialData ? 'Edit product' : 'Add a new product'
+  const toastMessage = initialData ? 'Product updated' : 'Product created'
   const action = initialData ? 'Save changes' : 'Create'
 
 
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      label: '',
-      imageUrl: ''
+    defaultValues: initialData ? { ...initialData, price: parseFloat(String(initialData.price)) } : {
+      name: '',
+      images: [],
+      price: 0,
+      categoryId: '',
+      colorId: '',
+      sizeId: '',
+      isFeatured: false,
+      isArchived: false,
     }
   })
 
 
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: ProductFormValues) => {
     try {
       setLoading(true)
       if (initialData) {
@@ -121,11 +138,16 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-          <FormField name="imageUrl" control={form.control} render={({ field }) => (
+          <FormField name="images" control={form.control} render={({ field }) => (
             <FormItem>
-              <FormLabel>Background image</FormLabel>
+              <FormLabel>Images</FormLabel>
               <FormControl>
-                <ImageUpload onRemove={() => field.onChange("")} onChange={(url) => field.onChange(url)} disabled={loading} value={field.value ? [field.value] : []} />
+                <ImageUpload onRemove={(url) => field.onChange([...field.value.filter(cur => cur.url !== url)])} onChange={(url) => {
+
+                  console.log(field.value)
+
+                  return field.onChange([...field.value, { url }])
+                }} disabled={loading} value={field.value.map(image => image.url)} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -155,4 +177,4 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
   );
 };
 
-export default BillboardForm;
+export default ProductForm;
