@@ -58,6 +58,8 @@ type ProductFormValues = z.infer<typeof formSchema>
 const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProps) => {
 
 
+
+
   const params = useParams()
 
   const router = useRouter()
@@ -129,6 +131,8 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
       setLoading(false)
     }
   }
+
+
 
   return (
     <>

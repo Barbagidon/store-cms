@@ -50,7 +50,7 @@ export const POST = async (
     return NextResponse.json(billboard);
   } catch (error) {
     console.log("[billboards_post]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };
 
@@ -72,6 +72,6 @@ export const GET = async (
     return NextResponse.json(billboards);
   } catch (error) {
     console.log("[billboards_get]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };

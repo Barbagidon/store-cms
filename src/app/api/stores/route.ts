@@ -28,6 +28,6 @@ export const POST = async (req: Request) => {
     return NextResponse.json(store);
   } catch (error) {
     console.log("[stores_post]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };

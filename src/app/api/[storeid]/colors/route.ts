@@ -50,7 +50,7 @@ export const POST = async (
     return NextResponse.json(color);
   } catch (error) {
     console.log("[COLORS_POST]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };
 
@@ -72,6 +72,6 @@ export const GET = async (
     return NextResponse.json(colors);
   } catch (error) {
     console.log("[COLORS_GET]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };

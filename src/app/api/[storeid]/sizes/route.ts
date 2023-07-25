@@ -50,7 +50,7 @@ export const POST = async (
     return NextResponse.json(size);
   } catch (error) {
     console.log("[sizes_post]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };
 
@@ -72,6 +72,6 @@ export const GET = async (
     return NextResponse.json(sizes);
   } catch (error) {
     console.log("[billboards_get]", error);
-    return new NextResponse("Inetrnal error", { status: 500 });
+    return new NextResponse("Internal error", { status: 500 });
   }
 };
