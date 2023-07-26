@@ -42,7 +42,7 @@ interface ProductFormProps {
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
-  price: z.coerce.number().min(1),
+  price: z.string().min(1),
   categoryId: z.string().min(1),
   colorId: z.string().min(1),
   sizeId: z.string().min(1),
@@ -79,10 +79,10 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData ? { ...initialData, price: parseFloat(String(initialData.price)) } : {
+    defaultValues: initialData || {
       name: '',
       images: [],
-      price: 0,
+      price: '0',
       categoryId: '',
       colorId: '',
       sizeId: '',
@@ -92,10 +92,14 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
   })
 
 
+
+
   const onSubmit = async (data: ProductFormValues) => {
     try {
       setLoading(true)
       if (initialData) {
+
+
         await axios.patch(`/api/${params.storeId}/products/${params.productId}`, data)
       }
       else {

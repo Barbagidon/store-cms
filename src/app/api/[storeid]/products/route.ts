@@ -63,8 +63,6 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    console.log();
-
     const product = await prismadb.product.create({
       data: {
         name,
@@ -97,6 +95,7 @@ export const GET = async (
 ) => {
   try {
     const { searchParams } = new URL(req.url);
+
     const categoryId = searchParams.get("categoryId") || undefined;
     const colorId = searchParams.get("colorId") || undefined;
     const sizeId = searchParams.get("sizeId") || undefined;

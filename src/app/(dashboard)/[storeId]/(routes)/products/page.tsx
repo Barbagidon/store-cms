@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { formatter } from '@/lib/utils'
 
 
+
 const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
 
     const products = await prismadb.product.findMany({
@@ -23,14 +24,6 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     })
 
 
-
-
-
-
-
-
-
-
     const formattedProducts: ProductColumn[] = products.map(({ id, name, createdAt, isFeatured, isArchived, price, category, color, size }) => ({
         id,
         name,
@@ -39,7 +32,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
         category: category.name,
         size: size.value,
         color: color.value,
-        price: formatter.format(price.toNumber()),
+        price: formatter(price),
         createdAt: format(createdAt, 'MMMM do, yyyy')
     }))
 

@@ -109,7 +109,7 @@ export const PATCH = async (
       },
       data: {
         images: {
-          createMany: images,
+          create: images,
         },
       },
     });
