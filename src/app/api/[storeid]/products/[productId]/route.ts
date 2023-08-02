@@ -62,8 +62,8 @@ export const PATCH = async (
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    if (!sizes) {
-      return new NextResponse("Size id is required", { status: 400 });
+    if (!sizes || sizes.length < 1) {
+      return new NextResponse("Sizes are required", { status: 400 });
     }
 
     if (!colorId) {

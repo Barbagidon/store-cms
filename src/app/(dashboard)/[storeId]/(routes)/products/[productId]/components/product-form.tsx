@@ -1,6 +1,6 @@
 "use client";
 
-import { Product, Image, Color, Category, Size } from "@prisma/client";
+import { Product, Image, Color, Category, Size, ProductSize } from "@prisma/client";
 import * as z from 'zod'
 import React, { useState } from "react";
 
@@ -33,7 +33,8 @@ import SizeSelect from "./size-select";
 
 interface ProductFormProps {
   initialData: Product & {
-    images: Image[]
+    images: Image[],
+    sizes: ProductSize[]
   } | null;
   colors: Color[],
   categories: Category[],
@@ -101,7 +102,7 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
 
   const onSubmit = async (data: ProductFormValues) => {
-    console.log(data)
+
     try {
       setLoading(true)
       if (initialData) {
@@ -223,7 +224,7 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
                       name: item.name,
                       value: item.label,
                       quantity: 10
-                    })))} data={sizes} />
+                    })))} productSizes={initialData?.sizes} sizes={sizes} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
