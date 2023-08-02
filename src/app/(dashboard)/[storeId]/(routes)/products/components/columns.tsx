@@ -2,12 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./cell-action";
+import { ProductSize } from "@prisma/client";
 
 export type ProductColumn = {
   id: string;
   name: string;
   price: string,
-  size: string,
+  sizes: ProductSize[],
   category: string,
   color: string,
   isFeatured: boolean,

@@ -22,6 +22,7 @@ const ProductClient = ({ data }: BillboardClientProps) => {
     const router = useRouter()
     const params = useParams()
 
+    console.log(data)
 
     return (
         <>

@@ -16,7 +16,7 @@ export const POST = async (
       price,
       categoryId,
       colorId,
-      sizeId,
+      sizes,
       images,
       isFeatured,
       isArchived,
@@ -44,8 +44,8 @@ export const POST = async (
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    if (!sizeId) {
-      return new NextResponse("Size id is required", { status: 400 });
+    if (!sizes || sizes.length === 0) {
+      return new NextResponse("Sizes is required", { status: 400 });
     }
 
     if (!colorId) {
@@ -69,16 +69,23 @@ export const POST = async (
         price,
         isFeatured,
         isArchived,
-        sizeId,
         categoryId,
         colorId,
-
         storeId: params.storeId,
         images: {
           createMany: {
             data: images,
           },
         },
+        sizes: {
+          create: sizes.map((size: any) => ({
+            size: { connect: { id: size.sizeId } },
+            quantity: size.quantity,
+          })),
+        },
+      },
+      include: {
+        sizes: true,
       },
     });
 
@@ -95,7 +102,6 @@ export const GET = async (
 ) => {
   try {
     const { searchParams } = new URL(req.url);
-
     const categoryId = searchParams.get("categoryId") || undefined;
     const colorId = searchParams.get("colorId") || undefined;
     const sizeId = searchParams.get("sizeId") || undefined;
@@ -118,7 +124,7 @@ export const GET = async (
         images: true,
         category: true,
         color: true,
-        size: true,
+        sizes: true,
       },
       orderBy: {
         createdAt: "desc",

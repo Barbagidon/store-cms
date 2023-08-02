@@ -28,6 +28,8 @@ import ImageUpload from "@/components/ui/Image-upload";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
+import SizeSelect from "./size-select";
+
 
 interface ProductFormProps {
   initialData: Product & {
@@ -45,12 +47,14 @@ const formSchema = z.object({
   price: z.string().min(1),
   categoryId: z.string().min(1),
   colorId: z.string().min(1),
-  sizeId: z.string().min(1),
+  sizes: z.array(
+    z.object({
+      sizeId: z.string().min(1),
+      quantity: z.number().min(0),
+    })
+  ),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
-
-
-
 })
 
 type ProductFormValues = z.infer<typeof formSchema>
@@ -85,7 +89,7 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
       price: '0',
       categoryId: '',
       colorId: '',
-      sizeId: '',
+      sizes: [],
       isFeatured: false,
       isArchived: false,
     }
@@ -95,6 +99,7 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
 
   const onSubmit = async (data: ProductFormValues) => {
+
     try {
       setLoading(true)
       if (initialData) {
@@ -205,23 +210,29 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
             />
             <FormField
               control={form.control}
-              name="sizeId"
+              name="sizes"
               render={({ field }) => {
 
                 return <FormItem>
-                  <FormLabel>Size</FormLabel>
-                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
+                  <FormLabel>Sizes</FormLabel>
+                  {/* <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}> */}
+                  <FormControl>
+                    {/* <SelectTrigger>
                         <SelectValue defaultValue={field.value} placeholder="Select a size" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
+                      </SelectTrigger> */}
+                    <SizeSelect onChange={(v) => field.onChange(v.map(item => ({
+                      sizeId: item.value,
+                      quantity: 10
+                    })))} data={sizes} />
+                  </FormControl>
+                  {/* <SelectContent>
                       {sizes.map((size) => (
                         <SelectItem key={size.id} value={size.id}>{size.value}</SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
+                    </SelectContent> */}
+                  {/* </Select> */}
+
+
                   <FormMessage />
                 </FormItem>
               }}

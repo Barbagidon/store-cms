@@ -37,7 +37,7 @@ export const PATCH = async (
       price,
       categoryId,
       colorId,
-      sizeId,
+      sizes,
       images,
       isFeatured,
       isArchived,
@@ -62,7 +62,7 @@ export const PATCH = async (
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    if (!sizeId) {
+    if (!sizes) {
       return new NextResponse("Size id is required", { status: 400 });
     }
 
@@ -94,10 +94,13 @@ export const PATCH = async (
         price,
         categoryId,
         colorId,
-        sizeId,
+
         isFeatured,
         isArchived,
         images: {
+          deleteMany: {},
+        },
+        sizes: {
           deleteMany: {},
         },
       },
@@ -110,6 +113,9 @@ export const PATCH = async (
       data: {
         images: {
           create: images,
+        },
+        sizes: {
+          create: sizes,
         },
       },
     });
