@@ -10,6 +10,9 @@ interface SizeSelectProps {
 
 
 const SizeSelect = ({ data, onChange }: SizeSelectProps) => {
+
+
+
     const formattedData = data.map(item => ({
         value: item.id,
         label: item.value

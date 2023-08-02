@@ -13,6 +13,7 @@ const ProductPage = async ({ params }: { params: { productId: string, storeId: s
         },
         include: {
             images: true,
+            sizes: true
 
         }
     })
@@ -37,7 +38,7 @@ const ProductPage = async ({ params }: { params: { productId: string, storeId: s
     })
 
 
-    
+
 
 
     const colors = await prismadb.color.findMany({

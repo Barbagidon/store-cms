@@ -72,6 +72,8 @@ model ProductSize {
   quantity  Int // Количество товаров данного размера для данного продукта
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  name      String
+  value     String
 
   @@index([productId])
   @@index([sizeId])
