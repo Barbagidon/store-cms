@@ -22,7 +22,7 @@ const SizeSelect = ({ sizes, productSizes, onChange }: SizeSelectProps) => {
 
 
     const formattedProductSizes = productSizes && productSizes.map(size => ({
-        value: size.id,
+        value: size.sizeId,
         name: size.name,
         label: size.value
     }))

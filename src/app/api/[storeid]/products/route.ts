@@ -118,7 +118,7 @@ export const GET = async (
         storeId: params.storeId,
         categoryId,
         colorId,
-        sizeId,
+        sizes: { some: { sizeId: sizeId } },
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
