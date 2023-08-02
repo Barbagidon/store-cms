@@ -5,7 +5,7 @@ import CreatableSelect, { ActionMeta, MultiValue } from 'react-select';
 
 interface SizeSelectProps {
     data: Size[]
-    onChange: (newValue: MultiValue<{ value: string; label: string; }>, actionMeta: ActionMeta<{ value: string; label: string; }>) => void
+    onChange: (newValue: MultiValue<{ value: string; label: string, name: string; }>, actionMeta: ActionMeta<{ value: string; label: string, name: string; }>) => void
 }
 
 
@@ -15,6 +15,7 @@ const SizeSelect = ({ data, onChange }: SizeSelectProps) => {
 
     const formattedData = data.map(item => ({
         value: item.id,
+        name: item.name,
         label: item.value
     }))
 
@@ -25,7 +26,6 @@ const SizeSelect = ({ data, onChange }: SizeSelectProps) => {
     return (
         <CreatableSelect
             onChange={onChange}
-
             closeMenuOnSelect={false}
             isMulti
             name="Sizes"

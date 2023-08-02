@@ -51,6 +51,8 @@ const formSchema = z.object({
     z.object({
       sizeId: z.string().min(1),
       quantity: z.number().min(0),
+      name: z.string().min(1),
+      value: z.string().min(1)
     })
   ),
   isFeatured: z.boolean().default(false).optional(),
@@ -99,7 +101,7 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
 
   const onSubmit = async (data: ProductFormValues) => {
-
+    console.log(data)
     try {
       setLoading(true)
       if (initialData) {
@@ -215,24 +217,14 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
                 return <FormItem>
                   <FormLabel>Sizes</FormLabel>
-                  {/* <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}> */}
                   <FormControl>
-                    {/* <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="Select a size" />
-                      </SelectTrigger> */}
-                    <SizeSelect onChange={(v) => field.onChange(v.map(item => ({
+                    <SizeSelect onChange={(selectItem) => field.onChange(selectItem.map(item => ({
                       sizeId: item.value,
+                      name: item.name,
+                      value: item.label,
                       quantity: 10
                     })))} data={sizes} />
                   </FormControl>
-                  {/* <SelectContent>
-                      {sizes.map((size) => (
-                        <SelectItem key={size.id} value={size.id}>{size.value}</SelectItem>
-                      ))}
-                    </SelectContent> */}
-                  {/* </Select> */}
-
-
                   <FormMessage />
                 </FormItem>
               }}

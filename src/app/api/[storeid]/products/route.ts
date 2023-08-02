@@ -81,6 +81,8 @@ export const POST = async (
           create: sizes.map((size: any) => ({
             size: { connect: { id: size.sizeId } },
             quantity: size.quantity,
+            name: size.name,
+            value: size.value,
           })),
         },
       },
