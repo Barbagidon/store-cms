@@ -51,7 +51,7 @@ const formSchema = z.object({
   sizes: z.array(
     z.object({
       sizeId: z.string().min(1),
-      quantity: z.number().min(0),
+      quantity: z.number().min(1),
       name: z.string().min(1),
       value: z.string().min(1)
     })
@@ -146,6 +146,8 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
 
 
+
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -219,16 +221,22 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
                 return <FormItem>
                   <FormLabel>Sizes</FormLabel>
                   <FormControl>
-                    <SizeSelect onChange={(selectItem) => field.onChange(selectItem.map(item => ({
-                      sizeId: item.value,
-                      name: item.name,
-                      value: item.label,
-                      quantity: 10
-                    })))} productSizes={initialData?.sizes} sizes={sizes} />
+                    <SizeSelect onChange={(selectItem) => {
+
+                      field.onChange(selectItem.map(item => ({
+                        sizeId: item.value,
+                        name: item.name,
+                        value: item.label,
+                        quantity: 10
+                      })))
+
+                    }} productSizes={initialData?.sizes} sizes={sizes} />
+
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               }}
+
             />
 
             <FormField
