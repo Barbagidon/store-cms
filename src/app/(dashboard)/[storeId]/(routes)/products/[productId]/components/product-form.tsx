@@ -51,7 +51,6 @@ const formSchema = z.object({
   sizes: z.array(
     z.object({
       sizeId: z.string().min(1),
-      quantity: z.number().min(1),
       name: z.string().min(1),
       value: z.string().min(1)
     })
@@ -227,7 +226,6 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
                         sizeId: item.value,
                         name: item.name,
                         value: item.label,
-                        quantity: 10
                       })))
 
                     }} productSizes={initialData?.sizes} sizes={sizes} />
