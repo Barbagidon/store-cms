@@ -42,7 +42,7 @@ const ImageUpload = ({ disabled, onChange, onRemove, value }: ImageUploadProps) 
                             <Trash className='h-4 w-4' />
                         </Button>
                     </div>
-                    <Image alt='image' fill className='object-cover' src={url} />
+                    <Image alt='image' fill className='object-contain' src={url} />
                 </div>))}
             </div>
             <CldUploadWidget onUpload={onUpload} uploadPreset='jsd6zk7e'>

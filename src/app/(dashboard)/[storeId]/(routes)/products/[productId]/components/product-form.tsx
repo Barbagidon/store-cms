@@ -1,6 +1,6 @@
 "use client";
 
-import { Product, Image, Color, Category, Size, ProductSize } from "@prisma/client";
+import { Product, Image, Color, Category, Size } from "@prisma/client";
 import * as z from 'zod'
 import React, { useState } from "react";
 
@@ -34,7 +34,7 @@ import SizeSelect from "./size-select";
 interface ProductFormProps {
   initialData: Product & {
     images: Image[],
-    sizes: ProductSize[]
+
   } | null;
   colors: Color[],
   categories: Category[],
@@ -48,16 +48,10 @@ const formSchema = z.object({
   price: z.string().min(1),
   categoryId: z.string().min(1),
   colorId: z.string().min(1),
-  sizes: z.array(
-    z.object({
-      sizeId: z.string().min(1),
-      name: z.string().min(1),
-      value: z.string().min(1)
-    })
-  ),
+  sizeId: z.string().min(1),
   isFeatured: z.boolean().default(false).optional(),
-  isArchived: z.boolean().default(false).optional(),
-})
+  isArchived: z.boolean().default(false).optional()
+});
 
 type ProductFormValues = z.infer<typeof formSchema>
 
@@ -83,19 +77,23 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
 
 
 
+  const defaultValues = initialData ? {
+    ...initialData,
+  } : {
+    name: '',
+    images: [],
+    price: "0",
+    categoryId: '',
+    colorId: '',
+    sizeId: '',
+    isFeatured: false,
+    isArchived: false,
+  }
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      name: '',
-      images: [],
-      price: '0',
-      categoryId: '',
-      colorId: '',
-      sizes: [],
-      isFeatured: false,
-      isArchived: false,
-    }
-  })
+    defaultValues
+  });
 
 
 
@@ -214,29 +212,26 @@ const ProductForm = ({ initialData, colors, categories, sizes }: ProductFormProp
             />
             <FormField
               control={form.control}
-              name="sizes"
-              render={({ field }) => {
-
-                return <FormItem>
-                  <FormLabel>Sizes</FormLabel>
-                  <FormControl>
-                    <SizeSelect onChange={(selectItem) => {
-
-                      field.onChange(selectItem.map(item => ({
-                        sizeId: item.value,
-                        name: item.name,
-                        value: item.label,
-                      })))
-
-                    }} productSizes={initialData?.sizes} sizes={sizes} />
-
-                  </FormControl>
+              name="sizeId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Size</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a size" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {sizes.map((size) => (
+                        <SelectItem key={size.id} value={size.id}>{size.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
-              }}
-
+              )}
             />
-
             <FormField
               control={form.control}
               name="colorId"

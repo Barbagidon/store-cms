@@ -1,16 +1,16 @@
 
-import { ProductSize, Size } from '@prisma/client';
+import { Size } from '@prisma/client';
 import React, { ChangeEvent } from 'react'
 import CreatableSelect, { ActionMeta, MultiValue } from 'react-select';
 
 interface SizeSelectProps {
     sizes: Size[]
-    productSizes?: ProductSize[]
+
     onChange: (newValue: MultiValue<{ value: string; label: string, name: string; }>, actionMeta: ActionMeta<{ value: string; label: string, name: string; }>) => void
 }
 
 
-const SizeSelect = ({ sizes, productSizes, onChange }: SizeSelectProps) => {
+const SizeSelect = ({ sizes, onChange }: SizeSelectProps) => {
 
 
 
@@ -21,11 +21,6 @@ const SizeSelect = ({ sizes, productSizes, onChange }: SizeSelectProps) => {
     }))
 
 
-    const formattedProductSizes = productSizes && productSizes.map(size => ({
-        value: size.sizeId,
-        name: size.name,
-        label: size.value
-    }))
 
 
 
@@ -33,7 +28,7 @@ const SizeSelect = ({ sizes, productSizes, onChange }: SizeSelectProps) => {
 
     return (
         <CreatableSelect
-            defaultValue={formattedProductSizes}
+            // defaultValue={formattedProductSizes}
             onChange={onChange}
             closeMenuOnSelect={false}
             isMulti

@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./cell-action";
-import { ProductSize } from "@prisma/client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
@@ -10,7 +9,7 @@ export type ProductColumn = {
   id: string;
   name: string;
   price: string,
-  sizes: ProductSize[],
+  size: string,
   category: string,
   color: string,
   isFeatured: boolean,
@@ -40,28 +39,8 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: "Category",
   },
   {
-    accessorKey: "sizes",
-    header: "Sizes",
-    cell: ({ row }) => (
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">Show</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Sizes</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-
-          {row.original.sizes.map(size => (
-            <DropdownMenuItem key={size.id}>{size.name}</DropdownMenuItem>
-          ))}
-
-
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-
-    )
+    accessorKey: "size",
+    header: "Size",
   },
   {
     accessorKey: "color",
