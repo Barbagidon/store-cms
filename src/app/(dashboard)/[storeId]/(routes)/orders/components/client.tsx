@@ -17,16 +17,8 @@ interface OrderClientProps {
 }
 
 const OrderClient = ({ data }: OrderClientProps) => {
-  const params = useParams();
-
-  const onSubmit = async () => {
-    const { data } = await axios.post(`/api/${params.storeId}/payment`);
-    console.log(data);
-  };
-
   return (
     <>
-      <button onClick={onSubmit}>hahahah</button>
       <Heading
         description="Manage orders for your store"
         title={`Orders(${data.length})`}
