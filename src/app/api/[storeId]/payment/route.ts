@@ -29,21 +29,21 @@ export const POST = async (
     },
   });
 
-  const order = await prismadb.order.create({
-    data: {
-      storeId: params.storeId,
-      isPaid: false,
-      orderItems: {
-        create: productIds.map((productId: string) => ({
-          product: {
-            connect: {
-              id: productId,
-            },
-          },
-        })),
-      },
-    },
-  });
+  // const order = await prismadb.order.create({
+  //   data: {
+  //     storeId: params.storeId,
+  //     isPaid: false,
+  //     orderItems: {
+  //       create: productIds.map((productId: string) => ({
+  //         product: {
+  //           connect: {
+  //             id: productId,
+  //           },
+  //         },
+  //       })),
+  //     },
+  //   },
+  // });
 
   try {
     const idempotenceKey = Date.now();
@@ -58,7 +58,7 @@ export const POST = async (
         type: "redirect",
         return_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
       },
-      metadata: { orderId: order.id },
+      metadata: { orderId: "order.id" },
       description: "Заказ #1",
     };
 
@@ -78,6 +78,36 @@ export const POST = async (
         )}`,
       },
       body: JSON.stringify(requestData),
+    });
+
+    const res = await data.json();
+
+    return NextResponse.json(res, {
+      headers: corsHeaders,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const GET = async (
+  req: Request,
+  { params }: { params: { storeId: string } }
+) => {
+  console.log("jopa");
+
+  try {
+    const url =
+      "https://api.yookassa.ru/v3/payments/2c83ef55-000f-5000-8000-105a367e49ce";
+
+    const data = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${btoa(
+          "249186:test_efpxF0Sqdetn3_udxSt6e1WT97d8UKIIqdTIpE-zMyU"
+        )}`,
+      },
     });
 
     const res = await data.json();
