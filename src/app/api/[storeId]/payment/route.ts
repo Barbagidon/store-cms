@@ -89,33 +89,3 @@ export const POST = async (
     console.log(error);
   }
 };
-
-export const GET = async (
-  req: Request,
-  { params }: { params: { storeId: string } }
-) => {
-  console.log("jopa");
-
-  try {
-    const url =
-      "https://api.yookassa.ru/v3/payments/2c83ef55-000f-5000-8000-105a367e49ce";
-
-    const data = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${btoa(
-          "249186:test_efpxF0Sqdetn3_udxSt6e1WT97d8UKIIqdTIpE-zMyU"
-        )}`,
-      },
-    });
-
-    const res = await data.json();
-
-    return NextResponse.json(res, {
-      headers: corsHeaders,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
