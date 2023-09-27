@@ -29,21 +29,21 @@ export const POST = async (
     },
   });
 
-  // const order = await prismadb.order.create({
-  //   data: {
-  //     storeId: params.storeId,
-  //     isPaid: false,
-  //     orderItems: {
-  //       create: productIds.map((productId: string) => ({
-  //         product: {
-  //           connect: {
-  //             id: productId,
-  //           },
-  //         },
-  //       })),
-  //     },
-  //   },
-  // });
+  const order = await prismadb.order.create({
+    data: {
+      storeId: params.storeId,
+      isPaid: false,
+      orderItems: {
+        create: productIds.map((productId: string) => ({
+          product: {
+            connect: {
+              id: productId,
+            },
+          },
+        })),
+      },
+    },
+  });
 
   try {
     const idempotenceKey = Date.now();
@@ -58,7 +58,7 @@ export const POST = async (
         type: "redirect",
         return_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
       },
-      metadata: { orderId: "order.id" },
+      metadata: { orderId: order.id },
       description: "Заказ #1",
     };
 
